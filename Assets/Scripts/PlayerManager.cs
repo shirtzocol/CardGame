@@ -10,7 +10,7 @@ public class PlayerManager : NetworkBehaviour
     public GameObject HandEnemy;
     public GameObject MainArea;
     public GameObject deck;
-
+    GameManager gm;
 
     List<GameObject> cards = new List<GameObject>();
 
@@ -29,6 +29,8 @@ public class PlayerManager : NetworkBehaviour
     {
         base.OnStartServer();
     
+        gm = GameObject.Find("GameManager").GetComponent<GameManager>();
+
         deck = GameObject.Find("DeckPanel");
         NetworkServer.Spawn(deck);
         
@@ -41,6 +43,11 @@ public class PlayerManager : NetworkBehaviour
     {
         Debug.Log("Deal Cards");
 
+        if(isServer)
+        {
+            //DealCards();
+        }
+
         for(int i = 0; i < 4; i++)
         {
             // Create a card and draw it to "Hand" zone
@@ -50,6 +57,20 @@ public class PlayerManager : NetworkBehaviour
             RpcShowCard(card, "Dealt");
         }
     }
+
+    // [Server]
+    // void DealCards()
+    // {
+    //     gm.UpdateTurnsPlayed();
+    //     RpcLogToClients("Turns played: " + gm.TurnsPlayed);
+    // }
+
+    // [ClientRpc]
+    // void RpcLogToClients(string message)
+    // {
+    //     Debug.Log(message);
+    // }
+
     public void PlayCard(GameObject card)
     {
         CmdPlayCard(card);
@@ -59,7 +80,26 @@ public class PlayerManager : NetworkBehaviour
     void CmdPlayCard(GameObject card)
     {
         RpcShowCard(card, "Played");
+
+        if(isServer)
+        {
+            UpdateTurnsPlayed();
+        }
     }
+
+    [Server]
+    void UpdateTurnsPlayed()
+    {
+        gm.UpdateTurnsPlayed();
+        RpcLogToClients("Turns played: " + gm.TurnsPlayed);
+    }
+
+    [ClientRpc]
+    void RpcLogToClients(string message)
+    {
+        Debug.Log(message);
+    }
+
 
     [ClientRpc]
     void RpcShowCard(GameObject card, string name)

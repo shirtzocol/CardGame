@@ -53,5 +53,5 @@
     },
     "git.ignoreLimitWarning": true,
     "dotnet.preferCSharpExtension": true,
-    "dotnet.defaultSolution": "Card Game.sln"
+    "dotnet.defaultSolution": "CardGame.sln"
 }

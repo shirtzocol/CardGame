@@ -5,7 +5,11 @@ using Mirror;
 
 public class GameManager : NetworkBehaviour
 {
-    
+    public int TurnsPlayed = 0;
+
+    public void UpdateTurnsPlayed() {
+        TurnsPlayed++;
+    }
 
     // Start is called before the first frame update
     void Start()
