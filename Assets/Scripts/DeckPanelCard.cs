@@ -7,9 +7,7 @@ public class DeckPanelCard : NetworkBehaviour
 {
     public GameObject cardBack;
 
-    public static List<Card> staticDeck;
-
-    public List<Card> nonstaticDeck;
+    public List<Card> deck;
 
     public GameObject cardInDeck1;
     public GameObject cardInDeck2;
@@ -21,15 +19,13 @@ public class DeckPanelCard : NetworkBehaviour
     void Start()
     {
         // Create a full deck
-        staticDeck = new List<Card>(CardDatabase.fullDeckSize);
+        deck = new List<Card>(CardDatabase.fullDeckSize);
         CardDatabase.cardList.ForEach((card)=>
         {
-            Card card1 = card.Copy();
-            staticDeck.Add(card1);
+            Card cardInDeck = card.Copy();
+            deck.Add(cardInDeck);
         });
         Shuffle();
-        //DEBUG
-        nonstaticDeck = staticDeck;
     }
 
     // Update is called once per frame
@@ -42,19 +38,19 @@ public class DeckPanelCard : NetworkBehaviour
     private void VisualDeck()
     {
         cardBack.SetActive(true);
-        if(staticDeck.Count < CardDatabase.fullDeckSize * 0.8)
+        if(deck.Count < CardDatabase.fullDeckSize * 0.8)
         {
             cardInDeck1.SetActive(false);
         }
-        if(staticDeck.Count < CardDatabase.fullDeckSize * 0.6)
+        if(deck.Count < CardDatabase.fullDeckSize * 0.6)
         {
             cardInDeck2.SetActive(false);
         }
-        if(staticDeck.Count < CardDatabase.fullDeckSize * 0.4)
+        if(deck.Count < CardDatabase.fullDeckSize * 0.4)
         {
             cardInDeck3.SetActive(false);
         }
-        if(staticDeck.Count == 0)
+        if(deck.Count == 0)
         {
             cardInDeck4.SetActive(false);
         }
@@ -63,21 +59,31 @@ public class DeckPanelCard : NetworkBehaviour
     {
         Card temp;
         int randomIndex;
-        for(int i = 0; i < staticDeck.Count; i ++)
+        for(int i = 0; i < deck.Count; i ++)
         {
-            temp = staticDeck[i];
-            randomIndex = Random.Range(i, staticDeck.Count);
-            staticDeck[i] = staticDeck[randomIndex];
-            staticDeck[randomIndex] = temp;
+            temp = deck[i];
+            randomIndex = Random.Range(i, deck.Count);
+            deck[i] = deck[randomIndex];
+            deck[randomIndex] = temp;
         }
+    }
+
+    public Card GetCard(int position)
+    {
+        return deck[position];
+    }
+
+    public void RemoveCard(int position)
+    {
+        deck.RemoveAt(position);
     }
 
     public void DEBUG()
     {
         string output = "";
-        for(int i=0;i<staticDeck.Count; i ++)
+        for(int i=0;i<deck.Count; i ++)
         {
-            output += staticDeck[i].number + " " + staticDeck[i].sign.ToString() +", ";
+            output += deck[i].number + " " + deck[i].sign.ToString() +", ";
         }
         Debug.Log(output);
     }

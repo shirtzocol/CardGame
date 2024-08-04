@@ -1,10 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Mirror;
 using UnityEngine;
 [System.Serializable]
 
-public class Card
-{
+public class Card : NetworkBehaviour {
+    
     public enum Sign {Heart, Diamond, Clubs, Spades};
 
     public int number { get; set; }

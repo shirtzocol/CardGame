@@ -52,10 +52,33 @@ public class PlayerManager : NetworkBehaviour
         {
             // Create a card and draw it to "Hand" zone
             GameObject card = Instantiate(Card, Hand.transform);
-            Debug.Log("Server");
+            // Get the right card values from deck
+            if(isServer)
+            {
+                SetCard(card);
+            }
+
             NetworkServer.Spawn(card, connectionToClient);
             RpcShowCard(card, "Dealt");
         }
+    }
+    [Server]
+    void SetCard(GameObject card)
+    {
+        DeckPanelCard deck1 = deck.GetComponent<DeckPanelCard>();
+        Card cardInfo = deck1.GetCard(0);
+        Debug.Log("caqrdnumber: " + cardInfo.number);
+        deck1.RemoveCard(0);
+        Card cardComponent = card.GetComponent<Card>();
+        cardComponent = cardInfo;
+        // RpcDrawToClients(card, cardInfo);
+    }
+
+    [ClientRpc]
+    void RpcDrawToClients(GameObject card, Card cardInfo)
+    {
+        Card cardComponent = card.GetComponent<Card>();
+        cardComponent = cardInfo;
     }
 
     // [Server]

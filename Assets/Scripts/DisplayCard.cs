@@ -15,14 +15,10 @@ public class DisplayCard : MonoBehaviour
     public bool cardBack;
     public static bool staticCardBack;
 
-    public GameObject Hand;
-    public int numberOfCardsInDeck;
     // Start is called before the first frame update
     void Start()
     {
-        displayCard = DeckPanelCard.staticDeck[0];
-        DeckPanelCard.staticDeck.RemoveAt(0);
-        Debug.Log("Starting Card: " + displayCard.number + " " + displayCard.sign);
+        displayCard = gameObject.GetComponent<Card>();
     }
 
     // Update is called once per frame
@@ -31,7 +27,6 @@ public class DisplayCard : MonoBehaviour
         // Display Card
         numberText.text = "  " + displayCard.number;
         artImage.sprite = displayCard.spriteImage;
-
         // Assure card back state
         staticCardBack = cardBack;
     }

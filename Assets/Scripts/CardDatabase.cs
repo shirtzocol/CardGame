@@ -32,6 +32,5 @@ public class CardDatabase : MonoBehaviour
                 cardList.Add(new Card(i, sign, points, Resources.Load<Sprite>(sign.ToString())));
             }
         }
-
     }
 }

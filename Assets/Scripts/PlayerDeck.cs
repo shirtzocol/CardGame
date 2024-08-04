@@ -26,8 +26,7 @@ public class PlayerDeck : NetworkBehaviour
 
     // Update is called once per frame
     void Update()
-    {    
-
+    {
         // Start a new Round
         if(TurnSystem.newRound)
         {           
