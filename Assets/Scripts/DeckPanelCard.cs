@@ -35,7 +35,7 @@ public class DeckPanelCard : NetworkBehaviour
     }
 
     // visual deck size getting smaller
-    private void VisualDeck()
+    public void VisualDeck()
     {
         cardBack.SetActive(true);
         if(deck.Count < CardDatabase.fullDeckSize * 0.8)

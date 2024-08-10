@@ -22,6 +22,8 @@ public class PlayerManager : NetworkBehaviour
         Hand = GameObject.Find("Hand");
         HandEnemy = GameObject.Find("HandEnemy");
 
+        NetworkServer.Spawn(deck);
+
     }
 
     [Server]
@@ -30,9 +32,9 @@ public class PlayerManager : NetworkBehaviour
         base.OnStartServer();
     
         gm = GameObject.Find("GameManager").GetComponent<GameManager>();
-
         deck = GameObject.Find("DeckPanel");
-        NetworkServer.Spawn(deck);
+
+
         
         // TODO - Whats that for?
         cards.Add(Card);
@@ -59,6 +61,7 @@ public class PlayerManager : NetworkBehaviour
             }
 
             NetworkServer.Spawn(card, connectionToClient);
+
             RpcShowCard(card, "Dealt");
         }
     }
@@ -129,6 +132,8 @@ public class PlayerManager : NetworkBehaviour
     {
         if(name == "Dealt")
         {
+            deck.GetComponent<DeckPanelCard>().cardInDeck1.SetActive(false);
+
             if(isOwned)
             {
                 card.transform.SetParent(Hand.transform, false);
